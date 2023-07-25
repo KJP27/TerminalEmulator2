@@ -125,7 +125,7 @@ a {
     display: inline-block;
   }
 
-..modal-content {
+.modal-content {
   position: relative;
   margin: auto;
   padding: 10px;
@@ -137,6 +137,8 @@ a {
   color: #008000;
   font-family: 'Courier New', monospace;
   text-align: center; 
+  box-sizing: border-box;  /* Add this line */
+  max-width: 100%;  /* Add this line */
 }
 
       .modal-button {
@@ -174,6 +176,11 @@ a {
   );
   background-size: 100% 3px;
   animation: scanlines 1s steps(60) infinite;
+}
+
+#initiateWord {
+  color: #FFFFFF;  /* Change color to white */
+  cursor: pointer;  /* Change cursor on hover */
 }
 
 @keyframes scanline {
