@@ -32,14 +32,18 @@
   word-wrap: break-word;
   overflow: hidden;
   height: 100vh;
+}
 
+#terminal {
+  overflow-y: auto;
+  height: 80vh; /* adjust as needed */
 }
 
 /* Styles for the clickable prompts */
 .clickable-prompt {
       color: #0080ff;
       text-decoration: none;
-      font-size: 0.5em; /* Adjust to make text smaller */
+      font-size: 0.5em; 
       margin: 0 1em;
     }
 
@@ -73,7 +77,7 @@
 
 .input {
       margin: 0 1rem 0 1rem;
-      word-wrap: break-word; /* Add this line */
+      word-wrap: break-word; 
     }
 
 pre {
@@ -136,8 +140,8 @@ a {
   color: #008000;
   font-family: 'Courier New', monospace;
   text-align: center; 
-  box-sizing: border-box;  /* Add this line */
-  max-width: 100%;  /* Add this line */
+  box-sizing: border-box; 
+  max-width: 100%;  
 }
 
       .modal-button {
@@ -178,14 +182,14 @@ a {
 }
 
 #initiateWord {
-  color: #FFFFFF;  /* Change color to white */
-  cursor: pointer;  /* Change cursor on hover */
+  color: #FFFFFF;  
+  cursor: pointer;  
 }
 
 @media (max-width: 600px) {
   .modal-content {
-    width: 90%; /* Adjust to desired width on small screens */
-    font-size: 0.8em; /* Adjust to a smaller font size on small screens */
+    width: 90%; 
+    font-size: 0.8em; 
   }
 }
 
@@ -210,7 +214,6 @@ a {
       <a class="clickable-prompt" href="https://t.me/cocktailbar_chat" target="_blank">/Telegram</a>
     </div>
      <!-- The Modal -->
-    <!-- Terminal-style prompt -->
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -398,21 +401,16 @@ function typeInitPhrase() {
   typePhrase(initPhrase, typeNextPhrase);
 }
 
- // Get the modal
  var modal = document.getElementById("myModal");
 
-// Get the "Initiate" word that starts the sequence
 var initiateWord = document.getElementById("initiateWord");
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the page loads, open the modal
 window.onload = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks the "Initiate" word, start the sound and terminal sequence
 initiateWord.onclick = function() {
   modal.style.display = "none";
   document.querySelector('audio').play();
