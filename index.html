@@ -121,16 +121,17 @@ a {
 }
 
 .modal-content {
-        position: relative;
-        margin: auto;
-        padding: 20px;
-        width: 80%;
-        text-shadow: 0 0 0.5rem rgb(200, 0, 255, 1), 2px 0 1px rgba(0, 0, 255, 1),
-        -1px 0 1px rgba(255, 0, 0, 1);
-    background-color: #000000;
-    border: 1px solid #008000;
-    color: #008000;
-    font-family: 'Courier New', monospace;      }
+      position: relative;
+      margin: auto;
+      padding: 10px;  /* reduce padding to make the box smaller */
+      width: fit-content;  /* adjust width to fit content */
+      text-shadow: 0 0 0.5rem rgb(200, 0, 255, 1), 2px 0 1px rgba(0, 0, 255, 1),
+      -1px 0 1px rgba(255, 0, 0, 1);
+      background-color: #000000;
+      border: 1px solid #008000;
+      color: #008000;
+      font-family: 'Courier New', monospace;
+    }
 
       /* The Close Button */
       .close {
@@ -411,7 +412,7 @@ initiateWord.onclick = function() {
 
 </script>
 <audio loop>
-<source src="https://KJP27.github.io/TerminalEmulator2/timer.mp3" type="audio/mpeg">
+<source src="https://KJP27.github.io/TerminalEmulator/timer.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 </body>
