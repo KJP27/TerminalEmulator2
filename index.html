@@ -122,16 +122,15 @@ a {
 
 .modal-content {
         position: relative;
-        background-color: #1a1a1a;
         margin: auto;
         padding: 20px;
-        border: 1px solid #ae1951;
         width: 80%;
-        color: #ae1951;
         text-shadow: 0 0 0.5rem rgb(200, 0, 255, 1), 2px 0 1px rgba(0, 0, 255, 1),
         -1px 0 1px rgba(255, 0, 0, 1);
-        font-family: monospace;
-      }
+    background-color: #000000;
+    border: 1px solid #008000;
+    color: #008000;
+    font-family: 'Courier New', monospace;      }
 
       /* The Close Button */
       .close {
@@ -149,9 +148,9 @@ a {
       }
 
       .modal-button {
-        background-color: #0080ff;
-        border: none;
-        color: white;
+      background-color: #000000;
+      border: 1px solid #008000;
+      color: #008000;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;
@@ -205,16 +204,21 @@ a {
       <a class="clickable-prompt" href="https://t.me/cocktailbar_chat" target="_blank">/Telegram</a>
     </div>
      <!-- The Modal -->
-     <div id="myModal" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Initiate Activation Sequence</p>
-        <button id="startButton" class="modal-button">Initiate</button>
-      </div>
-
-    </div>
+    <!-- Terminal-style prompt -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <pre>
+        _________________________________________________
+       |                                                 |
+       |  Initiate Activation Sequence                   |
+       |                                                 |
+       |  <span id="initiateWord">[Initiate]</span>      |
+       |_________________________________________________|
+    </pre>
+    <button id="startButton" class="modal-button">Initiate</button>
+  </div>
+</div>
 
     <div id="terminal"></div>
     <script>
@@ -383,8 +387,8 @@ function typeInitPhrase() {
   typePhrase(initPhrase, typeNextPhrase);
 }
 
-// Get the modal
-var modal = document.getElementById("myModal");
+ // Get the modal
+ var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal
 var btn = document.getElementById("startButton");
@@ -397,27 +401,17 @@ window.onload = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-// When the user clicks the start button, start the sound and terminal sequence
-btn.onclick = function() {
+// When the user clicks the "Initiate" word, start the sound and terminal sequence
+initiateWord.onclick = function() {
   modal.style.display = "none";
   document.querySelector('audio').play();
   typeInitPhrase();
 }
+
+
 </script>
 <audio loop>
-<source src="https://KJP27.github.io/TerminalEmulator/timer.mp3" type="audio/mpeg">
+<source src="https://KJP27.github.io/TerminalEmulator2/timer.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 </body>
