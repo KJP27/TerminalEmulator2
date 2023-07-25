@@ -30,12 +30,11 @@
     -1px 0 1px rgba(255, 0, 0, 1);
   white-space: pre-wrap;
   word-wrap: break-word;
-  overflow: hidden;
   height: 100vh;
 }
 
 #terminal {
-  overflow-y: scroll; /* Add a scroll bar when content overflows */
+  overflow-y: auto; /* Add a scroll bar when content overflows */
   height: calc(100vh - 60px); /* Adjust this value */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
   -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
