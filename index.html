@@ -35,8 +35,14 @@
 }
 
 #terminal {
-  overflow-y: auto;
-  height: 80vh; /* adjust as needed */
+  overflow-y: scroll; /* Add a scroll bar when content overflows */
+  height: 60vh; /* You can adjust this value */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+}
+
+#terminal::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
 }
 
 /* Styles for the clickable prompts */
