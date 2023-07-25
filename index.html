@@ -1,38 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Terminal - x</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,maximum-scale=5,user-scalable=yes"
+    />
+    <meta http-equiv="cache-control" content="max-age=3600" />
+    <style>
+    body {
+  position: relative;
+  padding-top: 1rem;
+  margin: 0;
+  letter-spacing: 0.1rem;
+  background-color: rgb(40, 40, 40);
+  font-family: monospace;
+  font-size: 2em;
+  background-color: #1a1a1a;
+  background-image: repeating-linear-gradient(
+    180deg,
+    #580066,
+    #000000 3px,
+    transparent 1px,
+    transparent 3px
+  );
+    color: #ae1951;
+  text-shadow: 0 0 0.5rem rgb(200, 0, 255, 1), 2px 0 1px rgba(0, 0, 255, 1),
+    -1px 0 1px rgba(255, 0, 0, 1);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  height: 100vh;
+
+}
+
+/* Styles for the clickable prompts */
+.clickable-prompt {
+      color: #0080ff;
+      text-decoration: none;
+      font-size: 0.5em; /* Adjust to make text smaller */
+      margin: 0 1em;
+    }
+
+    .prompt-container {
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+    }
+
+.prompt {
+  color: rgb(255, 176, 0);
+  text-shadow: none;
+  text-shadow: 0 0 0.5rem rgb(255, 176, 0), 1px 0 1px rgba(255, 0, 0, 1),
+    -1px 0 1px rgba(0, 0, 255, 1);
+}
+
+.cursor {
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0% {opacity: 1;}
+        50% {opacity: 0;}
+        100% {opacity: 1;}
+      }
+   
+
+.input {
+      margin: 0 1rem 0 1rem;
+      word-wrap: break-word; /* Add this line */
+    }
+
+pre {
+  margin-left: 0;
+}
+
+a {
+  text-decoration-line: unset;
+  color: rgba(51, 255, 0, 1);
+
+}
+
+::selection {
+  background: #0080ff;
+  text-shadow: none;
+}
+
+
+.scanlines {
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+}
+
+@keyframes glitch {
+  0% { color: red; }
+  25% { color: yellow; }
+  50% { color: green; }
+  75% { color: blue; }
+  100% { color: red; }
+}
+
+.glitch {
+  animation: glitch 0.1s infinite;
+}
+
+.scanlines:before,
+.scanlines:after {
+  display: block;
+  pointer-events: none;
+  content: "";
+  position: absolute;
+}
+
+.modal-content {
+        position: relative;
+        background-color: #1a1a1a;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ae1951;
+        width: 80%;
+        color: #ae1951;
+        text-shadow: 0 0 0.5rem rgb(200, 0, 255, 1), 2px 0 1px rgba(0, 0, 255, 1),
+        -1px 0 1px rgba(255, 0, 0, 1);
+        font-family: monospace;
+      }
+
+      /* The Close Button */
+      .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .modal-button {
+        background-color: #0080ff;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+.scanlines:before {
+  width: 100%;
+  height: 2px;
+  z-index: 2147483649;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0.75;
+  -webkit-animation: scanline 6s linear infinite;
+  animation: scanline 6s linear infinite;
+}
+.scanlines:after {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2147483648;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 3px;
+  animation: scanlines 1s steps(60) infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translate3d(0, 200000%, 0);
+  }
+}
+@keyframes scanlines {
+  0% {
+    background-position: 0 50%;
+  }
+
+  
+}
+</style>
+  </head>
+  <body>
+    <div class="prompt-container">
+      <a class="clickable-prompt" href="https://discord.gg/fF7nX7RWq3" target="_blank">/Discord</a>
+      <a class="clickable-prompt" href="https://t.me/cocktailbar_chat" target="_blank">/Telegram</a>
+    </div>
+     <!-- The Modal -->
+     <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Initiate Activation Sequence</p>
+        <button id="startButton" class="modal-button">Initiate</button>
+      </div>
+
+    </div>
+
+    <div id="terminal"></div>
+    <script>
+        const phrases = [
+    '+-----------------+\n| INITIALIZING |\n+-----------------+',
+    '\n>>>C0ckta!lB@r*MetaHunt_#MHNT',
+    '\\Patr0ns_Supp0rt*unlock',
+    '>Tokens_total*50,000\\',
+    '//Stake*ETH_dividends\\',
+    '\n*******\n*LOADING*\n*******',
+    '\n>Uniswap*COC_liquidity\\locked',
+    '\\Coingecko*Contract_Address//Dextools',
+    '\n+-----------------+\n| PROCESSING |\n+-----------------+',
+    '\n>C0nversati0n*Disc0rd_Chat\\Ann0uncements!',
+    '\\_Ethereum_Blockchain_//',
+    '>>>J0urney_C0ntinues#V1s1on',
+    '\\Pr0jects_@mplify*Earnings//',
+    '\n[==========]  // Progress Bar',
+    '\n>Presale_Cancelled*Liquidity_Relocked\\',
+    '\\Peanuts_PhasedOut//MHNT_Utility',
+    '>>>0fficial_Launch*Stay_Tuned',
+    '\\C0mmunity_Chat//Vibrant',
+    '>Web3_Experiences*Unlock_Opportunities\\',
+    '\n+-----------------+\n| COMPUTING |\n+-----------------+',
+    '\n\\Revised_Vision*Parent_Entity//',
+    '>>>Profit-Sharing#Passive_Income',
+    '\\MetaHunt_Project//First_Under_Umbrella',
+    '>Hard_Times*Learning_Experiences\\',
+    '\\Rewarding_Journey//Eager_To_Explore',
+    '>>>Array_of_Experiences#Unique_Charm',
+    '\\Smooth_Path//Token_Ecosystem',
+    '\n+-----------------+\n| LOADING |\n+-----------------+',
+    '\n>Efficient_Structure*Obsolete_Tokens\\',
+    '\\Seamless_Transition//Swap_Process',
+    '>>>Whitepaper#Roadmap_Vision',
+    '\\Future_Ecosystem//Shape_Together',
+    '>ETH_Dividends*Launching_Projects\\',
+    '\n[==========]  // Progress Bar',
+    '\n\\Thrilling_Projects//Front_of_Line',
+    '>>>Earnings_Amplified#Passive_Income',
+    '\\Listed_Uniswap//COC_Liquidity_Locked',
+    '\n+-----------------+\n| PROCESSING |\n+-----------------+',
+    '\n>Listed_Coingecko*Contract_Address\\',
+    '\\Dextools_Link//Official_Discord_Chat',
+    '>>>PriceBot#Public_General_Chat',
+    '\\Exciting_Announcements//Stay_Tuned',
+    '>CocktailBar_Mission*Revised_Vision\\',
+    '\\Parent_Entity//Array_of_Experiences',
+    '>>>COC_Token#Heart_of_All',
+    '\n+-----------------+\n| LOADING |\n+-----------------+',
+    '\n\\Relocking_Liquidity//Ecosystem_Upkeep',
+    '>Phasing_Out*Peanuts_Mojito\\',
+    '\\MHNT_Utility//First_Project_Umbrella',
+    '>>>Stake_COC#Earn_MHNT',
+    '\n[==========]  // Progress Bar',
+    '\n\\First_to_Acquire//Participate_MetaHunt',
+    '>Token_Structure*Detailed_Information\\',
+    '\\Comprehensive_Whitepaper//Vision_Roadmap',
+    '>>>Eager_to_Explore#Potential_Ahead',
+    '\n+-----------------+\n| COMPUTING |\n+-----------------+',
+    '\n\\Shape_Future//Ecosystem_Together',
+    '>Welcome_CocktailBar*Special_Concoction\\',
+    '\\Key_to_Participation//Web3_Experiences',
+    '>>>Stake_Earn#ETH_Dividends',
+    '\\Profit-Sharing//Front_of_Line',
+    '\\#KeyHolders*MetaHunt_Excitement',
+    '\n[==========]  // Progress Bar',
+    '\n>>>CocktailBar_Challenges*Paving_Stones',
+    '//Original_Mission*No_Rebrand\\',
+    '>Anchoring_Path*Eager_Introduction\\',
+    '\\Unique_Charm*Token_Heart//',
+    '>>>Unlock_Ventures#Resources_Use',
+    '\n+-----------------+\n| LOADING |\n+-----------------+',
+    '\n//Relocking_Liquidity*Growth_Plan\\',
+    '>PhaseOut_Peanuts*Mojito_Transition\\',
+    '\\Swap_Opportunity*MHNT_Utility//',
+    '>>>Stake_COC#MHNT_Earning',
+    '//Obsolete_Tokens*Simplified_Structure\\',
+    '\n+-----------------+\n| COMPUTING |\n+-----------------+',
+    '\n>Swap_Process_Info*Seamless_Transition\\',
+    '\\Whitepaper_Outline*Invitation_To_Read//',
+    '>>>Potential_Exploration#Future_Shaping',
+    '//COC_SpecialBrew*ERC20_Token\\',
+    '>Total_50K*Key_Participation\\',
+    '\\Stake_Rake_ETH*Thrilling_Launches//',
+    '\n[==========]  // Progress Bar',
+    '\n>>>Profit-Sharing_Model#Front_of_Line',
+    '//Project_Launches*Amped_Earnings\\',
+    '>Uniswap_Listed*COC_Purchase_Link\\',
+    '\\Liquidity_Locked*Unicrypt_Confirmation//',
+    '\n+-----------------+\n| LOADING |\n+-----------------+',
+    '\n>>>Coingecko_Listed#Check_COC_Status',
+    '//Token_Address*Contract_Info_Link\\',
+    '>Dextools_Link*COC_Chart_Info\\',
+    '\\Join_Discord*Holders_Chat//',
+    '>>>PriceBot_Info#General_Chat_Link',
+    '\\Stay_Tuned*Exciting_Announcements\\',
+    '>Token_Ecosystem*Optimization_Commitment\\',
+    '\\MHNT_Utility_Token*MetaHunt_First//',
+    '\n[==========]  // Progress Bar',
+    '\n>>>COC_Holders#Unique_Opportunity',
+    '//Acquire_MHNT*Participate_MetaHunt\\',
+    '>Token_Swap_Detail*Coming_Soon\\', 
+    '\\Whitepaper_Link*Check_Roadmap//',
+    '>>>Ecosystem_Shaping#Journey_Together',
+    '\n+-----------------+\n| COMPUTING |\n+-----------------+',
+    '\n//COC_Concoction*Web3_Experience\\',
+    '>Stake_to_Earn*ETH_Dividends\\',
+    '\\Profit_Sharing*Earning_Utility_Tokens//',
+    '>>>Passive_Income#Project_Launches',
+    '//Uniswap_Listed*COC_Purchase_Link\\',
+    '>Liquidity_Locked_Unicrypt*Token_Security\\',
+    '\\Coingecko_Listed*Track_COC//',
+    '\n+-----------------+\n| LOADING |\n+-----------------+',
+    '\n>>>Token_Contract_Address#Verify_on_Etherscan',
+    '//Dextools_Link*Track_COC_Price\\',
+    '>Join_Discord*Active_Community\\',
+    '\\Check_PriceBot*Telegram_Chat//',
+    '>>>Stay_Tuned*Exciting_Announcements',
+    '\n[==========]  // Progress Bar',
+    '\n//Transition_Phase*MHNT_Token\\',
+    '>Vision_Renewal*CocktailBar_Identity\\',
+    '\\Array_of_Experiences*Unique_Charm//',
+    '>>>Keys_Unlock*Myriad_Opportunities'
+];
+const initPhrase = 'CocktailbarOS Terminal | Initiation Sequence Active - [█▒▒▒▒▒▒▒▒▒] 10% Complete\n';
+
+
+let currentPhraseIndex = 0;
+const container = document.getElementById('terminal');
+
+function typePhrase(phrase, callback) {
+    let i = 0;
+    const phraseElement = document.createElement('span');
+    container.appendChild(phraseElement);
+    const interval = setInterval(() => {
+      phraseElement.textContent += phrase[i];
+      i++;
+      if (i === phrase.length) {
+        clearInterval(interval);
+        callback();
+      } else if (Math.random() < 0.03) {  // 10% chance of triggering a glitch
+        phraseElement.classList.add('glitch');
+        setTimeout(() => phraseElement.classList.remove('glitch'), 500); // Remove glitch class after 500ms
+      }
+    }, 100);
+  }
+
+function typeNextPhrase() {
+  typePhrase(phrases[currentPhraseIndex], () => {
+    setTimeout(() => {
+      currentPhraseIndex++;
+      if (currentPhraseIndex < phrases.length) {
+        container.appendChild(document.createTextNode(' '));
+        typeNextPhrase();
+      } else {
+        currentPhraseIndex = 0;
+        container.appendChild(document.createElement('br'));
+        typeNextPhrase();
+      }
+    }, 1000);
+  });
+}
+
+function typeInitPhrase() {
+  typePhrase(initPhrase, typeNextPhrase);
+}
+
 // Get the modal
-      var modal = document.getElementById("myModal");
+var modal = document.getElementById("myModal");
 
-      // Get the button that opens the modal
-      var btn = document.getElementById("startButton");
+// Get the button that opens the modal
+var btn = document.getElementById("startButton");
 
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
-      // When the page loads, open the modal
-      window.onload = function() {
-        modal.style.display = "block";
-      }
+// When the page loads, open the modal
+window.onload = function() {
+  modal.style.display = "block";
+}
 
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function() {
-        modal.style.display = "none";
-      }
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
 
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
 
-      // When the user clicks the start button, start the sound and terminal sequence
-      btn.onclick = function() {
-        modal.style.display = "none";
-        document.querySelector('audio').play();
-        typeInitPhrase();
-      }
-    </script>
-    <audio loop>
-      <source src="https://KJP27.github.io/TerminalEmulator2/timer.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-  </body>
+// When the user clicks the start button, start the sound and terminal sequence
+btn.onclick = function() {
+  modal.style.display = "none";
+  document.querySelector('audio').play();
+  typeInitPhrase();
+}
+</script>
+<audio loop>
+<source src="https://KJP27.github.io/TerminalEmulator/timer.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</body>
+</html>
